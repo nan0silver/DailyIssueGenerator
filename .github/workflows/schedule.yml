@@ -24,4 +24,5 @@ jobs:
       - name: index.js 실행
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CURRENCY_LAYER_API_KEY: ${{ secrets.CURRENCY_LAYER_API_KEY }}
         run: node index.js

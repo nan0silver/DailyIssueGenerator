@@ -3,10 +3,11 @@ async function makeIssue() {
     const OWNER = "nan0silver"; 
     const REPO = "github_power_actions"; 
 
-    // 1. 환율 데이터 가져오기
-    const exchangeRateResponse = await fetch("https://open.er-api.com/v6/latest/USD");
+    // 1. 환율 데이터 가져오기 (Currency Layer)
+    const currencyLayerApiKey = process.env.CURRENCY_LAYER_API_KEY; // 환경 변수에서 API 키 가져오기
+    const exchangeRateResponse = await fetch(`http://api.currencylayer.com/live?access_key=${currencyLayerApiKey}&currencies=KRW&source=USD&format=1`);
     const exchangeRateData = await exchangeRateResponse.json();
-    const exchangeRate = exchangeRateData.rates.KRW.toFixed(2); // KRW 환율
+    const exchangeRate = exchangeRateData.quotes.USDKRW.toFixed(2); // USD -> KRW 환율
 
     // 2. 명언 데이터 가져오기
     const quoteResponse = await fetch("https://api.adviceslip.com/advice");
