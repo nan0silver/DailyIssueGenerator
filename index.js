@@ -9,10 +9,9 @@ async function makeIssue() {
     const exchangeRate = exchangeRateData.rates.KRW.toFixed(2); // KRW 환율
 
     // 2. 명언 데이터 가져오기
-    const quoteResponse = await fetch("https://api.quotable.io/random");
+    const quoteResponse = await fetch("https://api.adviceslip.com/advice");
     const quoteData = await quoteResponse.json();
-    const quote = quoteData.content;
-    const author = quoteData.author;
+    const quote = quoteData.slip.advice;
 
     // 3. 랜덤 이모지 선택
     const emojis = ["🎉", "🚀", "🍀", "✨", "🔥", "🤖", "💡", "🌈", "🦄"];
@@ -29,7 +28,7 @@ async function makeIssue() {
             body: `### 오늘의 정보
 
 - **USD -> KRW 환율**: ${exchangeRate}원
-- **오늘의 명언**: "${quote}" - ${author}
+- **오늘의 명언**: "${quote}"
 - **오늘의 이모지**: ${randomEmoji}`
         })
     });
