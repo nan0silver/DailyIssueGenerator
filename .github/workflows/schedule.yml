@@ -3,7 +3,7 @@ name: schedule
 on:
   workflow_dispatch:
   schedule:
-    - cron: '* 2 * * *'
+    - cron: '0 0 * * *'
       # https://crontab.guru/
 
 jobs:
