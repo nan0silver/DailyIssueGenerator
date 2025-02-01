@@ -10,7 +10,6 @@ async function makeIssue() {
   const exchangeRate = exchangeRateData.quotes.USDKRW.toFixed(2);
 
   // 2. 주식 관련 뉴스 데이터 가져오기 (NewsAPI)
-  // "주식" 키워드로 최신 뉴스 3건을 가져옵니다.
   const newsApiKey = process.env.NEWS_API_KEY;
   const stockNewsResponse = await fetch(`https://newsapi.org/v2/everything?q=stock&language=ko&sortBy=publishedAt&pageSize=3&apiKey=${newsApiKey}`);
   const stockNewsData = await stockNewsResponse.json();
@@ -24,27 +23,36 @@ async function makeIssue() {
   }
 
   // 3. 날씨 정보 가져오기 (OpenWeatherMap)
-  // 예시: 서울의 날씨 정보를 가져옵니다.
   const weatherApiKey = process.env.OPENWEATHER_API_KEY;
   const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${weatherApiKey}&units=metric&lang=kr`);
   const weatherData = await weatherResponse.json();
-  const temperature = weatherData.main.temp.toFixed(1);
-  const weatherDescription = weatherData.weather[0].description;
-  const weatherIcon = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
+
+  let temperature = "데이터 없음";
+  let weatherDescription = "데이터 없음";
+  let weatherIcon = "";
+
+  // weatherData가 예상한 형식인지 체크
+  if (weatherData && weatherData.main && weatherData.weather && weatherData.weather[0]) {
+    temperature = weatherData.main.temp.toFixed(1);
+    weatherDescription = weatherData.weather[0].description;
+    weatherIcon = `http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
+  } else {
+    console.error("OpenWeatherMap API 오류:", weatherData);
+  }
 
   // 4. GitHub Issue 생성
   const issueBody = `
-### 📰 오늘의 정보
+### 💵 오늘의 환율 정보
 
 - **USD -> KRW 환율**: ${exchangeRate}원
 
 #### 📈 주식 관련 뉴스
 ${stockNewsList}
 
-#### 🌈 서울 날씨 정보
+#### ☀️ 서울 날씨 정보
 - **온도**: ${temperature}°C
 - **날씨**: ${weatherDescription}
-![날씨 아이콘](${weatherIcon})
+${weatherIcon ? `![날씨 아이콘](${weatherIcon})` : ''}
   `;
 
   const response = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/issues`, {
