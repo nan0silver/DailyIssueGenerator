@@ -13,6 +13,8 @@ async function makeIssue() {
   const newsApiKey = process.env.NEWS_API_KEY;
   const stockNewsResponse = await fetch(`https://newsapi.org/v2/everything?q=stock&language=ko&sortBy=publishedAt&pageSize=3&apiKey=${newsApiKey}`);
   const stockNewsData = await stockNewsResponse.json();
+  console.log(stockNewsData);
+  
   let stockNewsList = '';
   if (stockNewsData.articles && stockNewsData.articles.length > 0) {
     stockNewsList = stockNewsData.articles.map((article, index) => {
@@ -26,6 +28,7 @@ async function makeIssue() {
   const weatherApiKey = process.env.OPENWEATHER_API_KEY;
   const weatherResponse = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Seoul&appid=${weatherApiKey}&units=metric&lang=kr`);
   const weatherData = await weatherResponse.json();
+  console.log(weatherData);
 
   let temperature = "데이터 없음";
   let weatherDescription = "데이터 없음";
@@ -46,10 +49,11 @@ async function makeIssue() {
 
 - **USD -> KRW 환율**: ${exchangeRate}원
 
-#### 📈 주식 관련 뉴스
+### 📈 주식 관련 뉴스
 ${stockNewsList}
 
-#### ☀️ 서울 날씨 정보
+### ☀️ 서울 날씨 정보
+
 - **온도**: ${temperature}°C
 - **날씨**: ${weatherDescription}
 ${weatherIcon ? `![날씨 아이콘](${weatherIcon})` : ''}
