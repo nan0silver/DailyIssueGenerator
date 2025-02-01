@@ -66,7 +66,7 @@ ${weatherIcon ? `![날씨 아이콘](${weatherIcon})` : ''}
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      title: "오늘의 정보", 
+      title: "오늘의 환율 & 주식 & 날씨 정보", 
       body: issueBody
     })
   });
