@@ -12,7 +12,7 @@ async function makeIssue() {
   // 2. 주식 관련 뉴스 데이터 가져오기 (NewsAPI)
   // "주식" 키워드로 최신 뉴스 3건을 가져옵니다.
   const newsApiKey = process.env.NEWS_API_KEY;
-  const stockNewsResponse = await fetch(`https://newsapi.org/v2/everything?q=주식&language=ko&sortBy=publishedAt&pageSize=3&apiKey=${newsApiKey}`);
+  const stockNewsResponse = await fetch(`https://newsapi.org/v2/everything?q=stock&language=ko&sortBy=publishedAt&pageSize=3&apiKey=${newsApiKey}`);
   const stockNewsData = await stockNewsResponse.json();
   let stockNewsList = '';
   if (stockNewsData.articles && stockNewsData.articles.length > 0) {
